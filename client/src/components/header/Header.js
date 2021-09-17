@@ -42,14 +42,7 @@ function Header(props) {
                     >
                         Ajouter une recette
                     </NavLink>
-                    <NavLink
-                        className="navbar text-decoration-none "
-                        exact
-                        to="/modifier-recette"
-                        activeClassName="selected"
-                    >
-                        Modifier une recette 
-                    </NavLink>
+                    
                     </Nav>
                 </Navbar.Collapse>
                 </Container>

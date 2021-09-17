@@ -6,7 +6,6 @@ function Recettes(props) {
   const removeRecipe=props.removeRecipe;
   const heure = Math.floor(recetteCard.tempsPreparation / 60);
   const minutes = recetteCard.tempsPreparation % 60;
-  const btnSupp=props.btnSupp;
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -41,7 +40,7 @@ function Recettes(props) {
         <Card.Footer>
           {/* bouton modifier */}
           {/* <a href="/modifier-recette"> */}
-          <Button variant="primary">Modifier</Button>
+          <a href={`/modifier-recette/${recetteCard.id}`} ><Button recetteCard={recetteCard} variant="primary">Modifier</Button></a>
           {/* </a> bouton supprimer */}
           <Button onClick={handleShow}  variant="primary">Supprimer</Button>
             <Modal show={show} onHide={handleClose}>

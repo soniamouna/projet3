@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Card, Button } from "react-bootstrap";
 
 import Recettes from "../Recettes/Recettes";
 import RechercheBarre from "../rechercheBarre/RechercheBarre";
@@ -10,6 +9,38 @@ function ListeRecettes(props) {
   const [btnSupp, setBtnSupp] = useState(false);
 
   const [error, setError] = useState(null);
+
+  const recetteSearch = {
+    titre: "",
+    niveau: "",
+    personnes_min: 0,
+    personnes_max: 0,
+    temps_preparation: 0
+  };
+
+  const [searchTerm, setSearchTerm] = useState(recetteSearch);
+  const [searchResults, setSearchResults] = useState(null);
+
+  const handleForm = (e) => {
+    if (e.target.id == "niveau" || e.target.id == "personnes_min" || e.target.id  == "personnes_min") {
+      setSearchTerm({
+        ...searchTerm,
+        [e.target.id]: Number(e.target.value),
+      });
+    } else {
+      setSearchTerm({
+        ...searchTerm,
+        [e.target.id]: e.target.value,
+      });
+    }
+  }
+
+  // useEffect(() => {
+  //   const searchResults = recettes.filter(recette =>
+  //     recette.titre == searchTerm.titre
+  //     );
+  //     setSearchResults(searchResults);
+  // }, [searchTerm])
 
   useEffect(() => {
     //GET
@@ -21,6 +52,7 @@ function ListeRecettes(props) {
       .then((res) => res.json())
       .then((recipes) => {
         setRecettes(recipes);
+        //setSearchResults(recipes);
       });
   }
 
@@ -60,12 +92,12 @@ function ListeRecettes(props) {
   return (
     <div className="mt-5 container">
       <h1>Liste des recettes</h1>
-      <RechercheBarre />
+      <RechercheBarre handleForm={handleForm}/>
       {recettes && (
          <div className="row col-lg-12 g-4">
            {recettes.map((recette, i) => (
-             <div className="col-lg-4 ">
-               <Recettes recetteState={recette} removeRecipe={removeRecipe}  btnSupp={btnSupp}/>
+             <div className="col-lg-4 " key={i}>
+               <Recettes recetteState={recette} removeRecipe={removeRecipe} />
              </div>
            ))}
          </div>

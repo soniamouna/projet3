@@ -26,7 +26,7 @@ function App() {
           {/* /Favoris */}
           <Route exact path="/ajouter-recette" component={AjouterRecette} />
           {/* Evenement */}
-          <Route exact path="/modifier-recette" component={ModifRecette} />
+          <Route exact path="/modifier-recette/:id" component={ModifRecette} />
 
           {/* Error page */}
           <Route component={Error} />

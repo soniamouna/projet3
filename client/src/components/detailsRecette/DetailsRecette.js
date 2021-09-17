@@ -2,7 +2,7 @@ import React from "react";
 import Recettes from "../Recettes/Recettes";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Button from "@restart/ui/esm/Button";
+import { Button } from "react-bootstrap";
 
 function DetailsRecette(props) {
   const params = useParams();
@@ -21,13 +21,7 @@ function DetailsRecette(props) {
   // const tempsFonction = ((t)=>{
   //   const heure = Math.floor(t/60);
   //   const minutes = t % 60;
-
-  //   if(heure>0){
-  //     return heure + "h" + minutes +"min";
-  //   }else{
-  //     return minutes+"min";
-  //   }
-  // });
+  
   
   return (
     <div className="container pt-5 mt-3">

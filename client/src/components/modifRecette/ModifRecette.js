@@ -1,69 +1,208 @@
-import React from 'react';
-import {Form} from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
+
 
 function ModifRecette(props) {
-    return (
-        <div className="mt-5 container">
-          <h1>Modifier une recette</h1> 
-          <div className="mt-5">
-      <Form >
+  const params = useParams();
+  const id = params.id;
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>Titre</Form.Label>
-          <Form.Control type="text" placeholder="titre" />
-        </Form.Group>
+  // const data = {
+  //   // Recette vide à remplir
+  //   titre: "",
+  //   description: "",
+  //   niveau: "padawan",
+  //   personnes: 0,
+  //   tempsPreparation: 5,
+  //   ingredients: [["", ""]],
+  //   etapes: [""],
+  //   photo: "http://localhost:9000/images/dustcrepe.jpg",
+  // };
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Description</Form.Label>
-          <Form.Control as="textarea" rows={3} />
-        </Form.Group>
+  const [submitRecipe, setSubmitRecipe] = useState(null); //variable qui va stocker la recette
+ 
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>Sélectionnez le niveau</Form.Label>
-          <Form.Select aria-label="Default select example">
-          
-            <option value="1">padawan</option>
-            <option value="2">jedi</option>
-            <option value="3">maître</option>
-          </Form.Select>
-        </Form.Group>
+  useEffect(() => {
+    fetch(`http://localhost:9000/api/recipe/${id}`)
+      .then((res) => res.json())
+      .then((recipes) => {
+        setSubmitRecipe(recipes);
+        console.log("de",recipes);
+      });
+  }, []);
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>Nombre de personne</Form.Label>
-          <Form.Control type="number" placeholder="Nombre de personne" />
-        </Form.Group>
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>Temps de préparation</Form.Label>
-          <Form.Control type="number" placeholder="Temps de préparation" />
-        </Form.Group>
+  const handleForm = (e, index = null, value = null) => {
+    console.log(e.target.value);
+    if (e.target.id == "personnes" || e.target.id == "tempsPreparation") {
+      setSubmitRecipe({
+        ...submitRecipe,
+        [e.target.id]: Number(e.target.value),
+      });
+    } else if (e.target.id == "quantite" && index != null) {
+      const newValue = submitRecipe;
+      newValue.ingredients[index][0] = e.target.value;
+      setSubmitRecipe({ newValue });
+    } else if (e.target.id == "ingredient" && index != null) {
+      const newValue = submitRecipe;
+      newValue.ingredients[index][1] = e.target.value;
+      setSubmitRecipe({ newValue });
+    } else if (e.target.id == "etape" && index != null) {
+      const newValue = submitRecipe;
+      newValue.etapes[index] = e.target.value;
+      setSubmitRecipe({ newValue });
+    } 
+    else {
+      setSubmitRecipe({
+        ...submitRecipe,
+        [e.target.id]: e.target.value,
+      });
+    }
+  };
+  const addChamps = (option) => {
+    if (option == "ingrédient") {
+      const recipe = submitRecipe.ingredients;
+    recipe.push(["", ""]);
+    setSubmitRecipe({
+      ...submitRecipe,
+      [submitRecipe.ingredients]: recipe,
+    });
+    } else if (option == "étape") {
+      const recipe = submitRecipe.etapes;
+    recipe.push("");
+    setSubmitRecipe({
+      ...submitRecipe,
+      [submitRecipe.etapes]: recipe,
+    });
+    }
+  };
 
-        <Form.Group
-          className="mb-3 row col-lg-12"
-          controlId="exampleForm.ControlInput1"
-        >
-          <Form.Label>Ingrédients</Form.Label>
-          <div className="col-lg-4">
-            <Form.Control type="number" placeholder="nombre" />
-          </div>
-          <div className="col-lg-4">
-            <Form.Control type="text" placeholder="cl" />
-          </div>
-          <div className="col-lg-4">
-            <Form.Control type="text" placeholder="ingrédient" />
-          </div>
-        </Form.Group>
+  const removeFormFields = (option, i) => {
+    if (option == "ingrédient") {
+      const recipe = submitRecipe.ingredients;
+    recipe.splice(i, 1);
+    setSubmitRecipe({
+      ...submitRecipe,
+      [submitRecipe.ingredients]: recipe,
+    });
+    } else if (option == "étape") {
+      const recipe = submitRecipe.etapes;
+    recipe.splice(i, 1);
+    setSubmitRecipe({
+      ...submitRecipe,
+      [submitRecipe.etapes]: recipe,
+    });
+    }
+  }
+  function onValidateForm() {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(submitRecipe),
+    };
+    fetch(`http://localhost:9000/api/recipe/${id}`, requestOptions)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log("er",result);
+          setSubmitRecipe(result);
+        },
+        (error) => {
+          //  setError(error);
+          //  console.log(error);
+        }
+      );
+  }
+  return (
+    <div className="mt-5 container">
+      <h1>Modifier une recette</h1>
+      <div className="mt-5">
+        {submitRecipe && (
+              <Form onChange={handleForm}>
+              {" "}
+              {/*Receperer toutes manipulatiosn de l'utilisateur (appuyer un bouton , relacher , mouvement)*/}
+              <Form.Group className="mb-3" controlId="titre">
+                <Form.Label>Titre</Form.Label>
+                <Form.Control value={submitRecipe.titre} type="text" placeholder="titre" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control value={submitRecipe.description} as="textarea" rows={3} />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="niveau">
+                <Form.Label>Sélectionnez le niveau</Form.Label>
+                <Form.Select value={submitRecipe.niveau} aria-label="padawan">
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Etapes</Form.Label>
-          <Form.Control as="textarea" rows={3} />
-        </Form.Group>
-        <Form.Label>Image</Form.Label>
-        <Form.Control type="file" />
-      </Form>
-    </div> 
-        </div>
-    );
+                  <option value="padawan">padawan</option>
+                  <option value="jedi">jedi</option>
+                  <option value="maitre">maître</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="personnes">
+                <Form.Label>Nombre de personne</Form.Label>
+                <Form.Control value={submitRecipe.personnes} type="number" placeholder="Nombre de personne" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="tempsPreparation">
+                <Form.Label>Temps de préparation</Form.Label>
+                <Form.Control value={submitRecipe.tempsPreparation} type="number" placeholder="Temps de préparation" />
+              </Form.Group>
+              <Form.Label>Ingrédients</Form.Label>
+              <Form.Group className="mb-3" controlId="ingredients">
+                {submitRecipe.ingredients.map((value, index) => (
+                  <div className="form-inline" key={index}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="quantite"
+                      onChange={(e) => handleForm(e, index, value)}
+                    >
+                      <Form.Control value={value[0]} type="text" placeholder="quantite" />
+                    </Form.Group>
+      
+                    <Form.Group
+                      className="mb-3"
+                      controlId="ingredient"
+                      onChange={(e) => handleForm(e, index)}
+                    >
+                      <Form.Control type="text" value={value[1]} placeholder="ingredient" />
+                      <Button onClick={() => removeFormFields("ingrédient", index)} variant="primary">X</Button>
+      
+                    </Form.Group>
+                  </div>
+                ))}
+              </Form.Group>
+              <Button onClick={() => addChamps("ingrédient")} variant="primary">
+                Ajouter des ingrédients
+              </Button>
+      
+              <Form.Group className="mb-3" controlId="etapes">
+                <Form.Label>Etapes</Form.Label>
+                {submitRecipe.etapes.map((value, index) => (
+                  <div className="form-inline" key={index}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="etape"
+                      onChange={(e) => handleForm(e, index, value)}
+                    >
+                      <Form.Control value={value} as="textarea" rows={3} />
+                      <Button onClick={() => removeFormFields("étape", index)} variant="primary">X</Button>
+                    </Form.Group>
+                  </div>
+                ))}
+                <Button onClick={() => addChamps("étape")} variant="primary">Ajouter des étapes</Button>
+              </Form.Group>
+      
+              <Form.Label>Image</Form.Label>
+              <Form.Control type="file" />
+              <a href="/"><Button onClick={onValidateForm}>Submit</Button> </a>
+            </Form>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default ModifRecette;
