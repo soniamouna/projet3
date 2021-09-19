@@ -2,6 +2,8 @@
 import React from "react";
 import { useState } from "react";
 import { Form,Button } from "react-bootstrap";
+import FormulaireAjoutModif from "../formulaire/FormulaireAjoutModif";
+import Recettes from "../recettes/Recettes";
 
 function AjouterRecette(props) {
   const data = {
@@ -10,10 +12,10 @@ function AjouterRecette(props) {
     description: "",
     niveau: "padawan",
     personnes: 0,
-    tempsPreparation: 5,
+    tempsPreparation: 0,
     ingredients: [["", ""]],
     etapes: [""],
-    photo: "http://localhost:9000/images/dustcrepe.jpg",
+    photo: "",
   };
 
   const [error, setError] = useState(null); //variable pour gérer les erreurs
@@ -89,9 +91,6 @@ function AjouterRecette(props) {
       },
       body: JSON.stringify(submitRecipe),
     };
-    console.log(submitRecipe);
-    console.log(submitRecipe.ingredients);
-    console.log(data.ingredients);
     fetch("http://localhost:9000/api/recipes", requestOptions)
       .then((res) => res.json())
       .then(
@@ -108,6 +107,9 @@ function AjouterRecette(props) {
   return (
     <div className="mt-5 container">
       <h1>Ajouter une recette</h1>
+      {/* {submitRecipe && (
+        <FormulaireAjoutModif data={submitRecipe} onValidateForm={onValidateForm}/>
+      )} */}
       <Form onChange={handleForm}>
         {" "}
         {/*Receperer toutes manipulatiosn de l'utilisateur (appuyer un bouton , relacher , mouvement)*/}
@@ -137,7 +139,7 @@ function AjouterRecette(props) {
         </Form.Group>
         <Form.Label>Ingrédients</Form.Label>
         <Form.Group className="mb-3" controlId="ingredients">
-          {submitRecipe.ingredients.map((value, index) => (
+          {submitRecipe.ingredients.map((value, index) => ( //foreach ingredient dans ma recette
             <div className="form-inline" key={index}>
               <Form.Group
                 className="mb-3"
@@ -165,7 +167,7 @@ function AjouterRecette(props) {
 
         <Form.Group className="mb-3" controlId="etapes">
           <Form.Label>Etapes</Form.Label>
-          {submitRecipe.etapes.map((value, index) => (
+          {submitRecipe.etapes.map((value, index) => ( //pour chaque etapes dans ma recette
             <div className="form-inline" key={index}>
               <Form.Group
                 className="mb-3"

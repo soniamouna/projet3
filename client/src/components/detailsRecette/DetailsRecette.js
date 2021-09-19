@@ -1,12 +1,22 @@
 import React from "react";
-import Recettes from "../Recettes/Recettes";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
+import BoutonModif from "../boutonModif/BoutonModif";
+import BoutonSupp from "../boutonSupp/BoutonSupp";
+
+
 
 function DetailsRecette(props) {
   const params = useParams();
   const id = params.id;
+  const [btnSupp, setBtnSupp] = useState(false); 
+   const [show, setShow] = useState(false);
+   const [error, setError] = useState(null);
+
+
+const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
   const [detailsState, setDetails] = useState(null);
 
   useEffect(() => {
@@ -14,21 +24,50 @@ function DetailsRecette(props) {
       .then((res) => res.json())
       .then((recipes) => {
         setDetails(recipes);
+
       });
      
   }, []);
 
-  // const tempsFonction = ((t)=>{
-  //   const heure = Math.floor(t/60);
-  //   const minutes = t % 60;
+const removeRecipe = (btnSupp, id) => {
+
+    console.log(id);
+    console.log("supp",btnSupp);
+    if(btnSupp===true){ //Verifie que l'utilisateur a appuyer sur le bon bouton
+      const requestOptions = {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(`http://localhost:9000/api/recipe/${id}`, requestOptions)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+          setBtnSupp(false);
+          console.log("btn",btnSupp);
+          props.history.push('/');
+
+        },
+        (error) => {
+          setError(error);
+          console.log(error);
+        }
+      );}
+
+    
+  } 
   
   
   return (
-    <div className="container pt-5 mt-3">
+    <div className="container pt-5 my-5 ">
       {detailsState && (
         <div>
           {/* titre */}
-          <p>{detailsState.titre}</p>
+          <h1>{detailsState.titre}</h1>
 
           {/* photo */}
           <img src={detailsState.photo} />
@@ -43,22 +82,34 @@ function DetailsRecette(props) {
           <p>{detailsState.personnes} {detailsState.personnes > 1 ? "personnes" : "personne"}</p>
 
           {/* tempsPrepation */}
-          <p>{detailsState.tempsPreparation} min</p>{/* {detailsState.tempsPreparation} */}
-          
+          <p>{detailsState.tempsPreparation} min</p>{/* {detailsState.tempsPreparation} */} 
           {/* ingredients */}
           {detailsState && (
             <div className="row col-lg-12 g-4">
               {detailsState.ingredients.map((value, i) => (
-                <div className="col-lg-4 ">
-                  {value[0]} {value[1]}
-                </div>
+                <ul className="col-lg-4 ">
+                  <li>{value[0]} {value[1]}</li>
+                </ul>
               ))}
             </div>
           )}
           {/* étapes */}
           <p className="mt-3"> {detailsState.etapes}</p>
-          <a href="/modifier-recette"><Button variant="primary">Modifier</Button></a> {/* bouton supprimer */}
-          <Button variant="primary">Supprimer</Button>{" "}
+         <BoutonModif recetteCard={detailsState}/>
+         <Button onClick={handleShow}  variant="primary">Supprimer</Button>
+            <Modal show={show} onHide={handleClose}>
+          <Modal.Header >
+            <Modal.Title>Êtes-vous sûr de vouloir supprimer cette recette?</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={()=>removeRecipe(true,detailsState.id)}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
         </div>
       )}
 

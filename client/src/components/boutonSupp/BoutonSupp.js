@@ -1,34 +1,40 @@
-// import {Button } from "react-bootstrap";
-// import React from "react";
-// import { useParams } from "react-router-dom";
+// import React, {useState} from 'react';
+
+// import { Button, Modal } from "react-bootstrap";
 
 // function BoutonSupp(props) {
-//     const params = useParams();
-//   const id = params.id;
-//   const suppRecette=props.recetteCard;
-  
-//   function toSupp() {
-//     const requestOptions = {
-//       method: "DELETE",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(submitRecipe),
-//     };
-//     fetch(`http://localhost:9000/api/recipe/${id}`,requestOptions)
-//     .then((res) => res.json())
-//     .then(onClick={remove(id));
-//   }
-//   return (
-//       <>
-//      {/* <a href="/modifier-recette"> */}
-//         <Button variant="primary">Modifier</Button>
-//          {/* </a> bouton supprimer */}
+//     const recetteCard = props.recetteState;
 
-//       <Button onClick={(e) => remove(id, e)} variant="primary">Supprimer</Button>
-//       </>
-//   );
+//     const removeRecipe = props.removeRecipe;
+//     const [show, setShow] = useState(false);
+
+//   const handleClose = () => setShow(false);
+//   const handleShow = () => setShow(true);
+//     return (
+//         <div>
+//             <Button onClick={handleShow} variant="primary">
+//             Supprimer
+//           </Button>
+//           <Modal show={show} onHide={handleClose}>
+//             <Modal.Header>
+//               <Modal.Title>
+//                 Êtes-vous sûr de vouloir supprimer cette recette? 
+//               </Modal.Title>
+//             </Modal.Header>
+//             <Modal.Footer>
+//               <Button variant="secondary" onClick={handleClose}>
+//                 Non
+//               </Button>
+//               <Button
+//                 variant="primary"
+//                 onClick={() => removeRecipe(true, recetteCard.id)}
+//               >
+//                 Oui
+//               </Button>
+//             </Modal.Footer>
+//           </Modal>
+//         </div>
+//     );
 // }
 
 // export default BoutonSupp;

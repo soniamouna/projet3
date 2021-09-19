@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
+import BoutonModif from "../boutonModif/BoutonModif";
+import BoutonSupp from "../boutonSupp/BoutonSupp";
 
 function Recettes(props) {
-  const recetteCard= props.recetteState;
-  const removeRecipe=props.removeRecipe;
+  const recetteCard = props.recetteState;
+  const removeRecipe = props.removeRecipe;
   const heure = Math.floor(recetteCard.tempsPreparation / 60);
   const minutes = recetteCard.tempsPreparation % 60;
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
 
   return (
     <div>
       {/* Card pour chaque recette */}
-      <Card>
+      <Card className="borderCard">
         {/* image */}
         <a href={`/recette/${recetteCard.id}`}>
           <Card.Img variant="top" src={recetteCard.photo} />
@@ -40,8 +41,8 @@ function Recettes(props) {
         <Card.Footer>
           {/* bouton modifier */}
           {/* <a href="/modifier-recette"> */}
-          <a href={`/modifier-recette/${recetteCard.id}`} ><Button recetteCard={recetteCard} variant="primary">Modifier</Button></a>
-          {/* </a> bouton supprimer */}
+          <BoutonModif recetteCard={recetteCard}/>
+
           <Button onClick={handleShow}  variant="primary">Supprimer</Button>
             <Modal show={show} onHide={handleClose}>
           <Modal.Header >
@@ -57,7 +58,7 @@ function Recettes(props) {
           </Modal.Footer>
         </Modal>
         </Card.Footer>
-      </Card>   
+      </Card>
     </div>
   );
 }

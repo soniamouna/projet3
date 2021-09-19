@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import Breadcrump from '../breadcrump/Breadcrump';
 
-import Recettes from "../Recettes/Recettes";
+import Recettes from "../recettes/Recettes";
 import RechercheBarre from "../rechercheBarre/RechercheBarre";
 
 function ListeRecettes(props) {
@@ -22,7 +23,7 @@ function ListeRecettes(props) {
   const [searchResults, setSearchResults] = useState(null);
 
   const handleForm = (e) => {
-    if (e.target.id == "niveau" || e.target.id == "personnes_min" || e.target.id  == "personnes_min") {
+    if (e.target.id == "temps_preparation" || e.target.id == "personnes_min" || e.target.id  == "personnes_max") {
       setSearchTerm({
         ...searchTerm,
         [e.target.id]: Number(e.target.value),
@@ -35,32 +36,51 @@ function ListeRecettes(props) {
     }
   }
 
-  // useEffect(() => {
-  //   const searchResults = recettes.filter(recette =>
-  //     recette.titre == searchTerm.titre
-  //     );
-  //     setSearchResults(searchResults);
-  // }, [searchTerm])
+   useEffect(() => {
+     if (recettes !== null) {
+       console.log(recettes, "recette");
+       console.log(searchResults, "searchRecette");
+     const search = recettes.filter(recette => functionTri(recette));
+       console.log(searchResults, "final");
+       setSearchResults(search);
+     }
+   }, [searchTerm])
 
   useEffect(() => {
     //GET
     getRecipes();
   }, []);
 
+  const functionTri = (recette = null) => {
+    if (recette.titre.toLowerCase().includes(searchTerm.titre.toLowerCase()) || searchTerm.titre == "") {
+      if (recette.tempsPreparation <= searchTerm.temps_preparation || searchTerm.temps_preparation == 0) {
+          if (recette.niveau == searchTerm.niveau || searchTerm.niveau == "") {
+            if (recette.personnes >= searchTerm.personnes_min || searchTerm.personnes_min == 0) {
+              if (recette.personnes <= searchTerm.personnes_max || searchTerm.personnes_max == 0) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+      return false;
+    }
+
   const getRecipes = () =>{
-    fetch("http://localhost:9000/api/recipes")
-      .then((res) => res.json())
-      .then((recipes) => {
-        setRecettes(recipes);
-        //setSearchResults(recipes);
-      });
+    //GET
+      fetch("http://localhost:9000/api/recipes")
+        .then((res) => res.json())
+        .then((recipes) => {
+          setSearchResults(recipes);
+          setRecettes(recipes);
+        });
   }
 
   const removeRecipe = (btnSupp, id) => {
 
     console.log(id);
     console.log("supp",btnSupp);
-    if(btnSupp===true){
+    if(btnSupp===true){ //Verifie que l'utilisateur a appuyer sur le bon bouton
       const requestOptions = {
       method: "DELETE",
       headers: {
@@ -86,25 +106,32 @@ function ListeRecettes(props) {
       );}
 
     
-  }
+  } 
 
 
   return (
+    <>
+    <div className="">
+      
+      <Breadcrump/>
+      </div>
     <div className="mt-5 container">
       <h1>Liste des recettes</h1>
       <RechercheBarre handleForm={handleForm}/>
-      {recettes && (
+      {searchResults && (
          <div className="row col-lg-12 g-4">
-           {recettes.map((recette, i) => (
+           {searchResults.map((recette, i) => ( //foreach recette in searchResults
              <div className="col-lg-4 " key={i}>
-               <Recettes recetteState={recette} removeRecipe={removeRecipe} />
+              <Recettes recetteState={recette} removeRecipe={removeRecipe} />  {/* function afficher une recette (recette, métohde enleveRecette) */}
              </div>
            ))}
          </div>
       )}
 
-    </div>
+    </div> 
+    </>
   );
+ 
 }
 
 export default ListeRecettes;

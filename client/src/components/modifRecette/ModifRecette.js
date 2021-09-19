@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import FormulaireAjoutModif from "../formulaire/FormulaireAjoutModif";
+
+import { Form,Button } from "react-bootstrap";
 
 
 function ModifRecette(props) {
   const params = useParams();
   const id = params.id;
-
-  // const data = {
-  //   // Recette vide à remplir
-  //   titre: "",
-  //   description: "",
-  //   niveau: "padawan",
-  //   personnes: 0,
-  //   tempsPreparation: 5,
-  //   ingredients: [["", ""]],
-  //   etapes: [""],
-  //   photo: "http://localhost:9000/images/dustcrepe.jpg",
-  // };
-
   const [submitRecipe, setSubmitRecipe] = useState(null); //variable qui va stocker la recette
  
 
   useEffect(() => {
+    //PUT<
     fetch(`http://localhost:9000/api/recipe/${id}`)
       .then((res) => res.json())
       .then((recipes) => {
@@ -84,14 +73,14 @@ function ModifRecette(props) {
     recipe.splice(i, 1);
     setSubmitRecipe({
       ...submitRecipe,
-      [submitRecipe.ingredients]: recipe,
+      [submitRecipe.ingredients]: recipe
     });
     } else if (option == "étape") {
       const recipe = submitRecipe.etapes;
     recipe.splice(i, 1);
     setSubmitRecipe({
       ...submitRecipe,
-      [submitRecipe.etapes]: recipe,
+      [submitRecipe.etapes]: recipe
     });
     }
   }
@@ -121,7 +110,10 @@ function ModifRecette(props) {
     <div className="mt-5 container">
       <h1>Modifier une recette</h1>
       <div className="mt-5">
-        {submitRecipe && (
+      {/* {submitRecipe && (
+        <FormulaireAjoutModif data={submitRecipe} onValidateForm={onValidateForm}/>
+      )} */}
+         {submitRecipe && (
               <Form onChange={handleForm}>
               {" "}
               {/*Receperer toutes manipulatiosn de l'utilisateur (appuyer un bouton , relacher , mouvement)*/}
@@ -168,9 +160,10 @@ function ModifRecette(props) {
                       onChange={(e) => handleForm(e, index)}
                     >
                       <Form.Control type="text" value={value[1]} placeholder="ingredient" />
-                      <Button onClick={() => removeFormFields("ingrédient", index)} variant="primary">X</Button>
       
                     </Form.Group>
+                    <Button onClick={() => removeFormFields("ingrédient", index)} variant="primary">X</Button>
+
                   </div>
                 ))}
               </Form.Group>
@@ -199,7 +192,7 @@ function ModifRecette(props) {
               <Form.Control type="file" />
               <a href="/"><Button onClick={onValidateForm}>Submit</Button> </a>
             </Form>
-        )}
+        )} 
       </div>
     </div>
   );
