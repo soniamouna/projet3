@@ -1,10 +1,13 @@
 import React from 'react';
 
-function ErrorPage(props) {
+function ErrorPage() {
     return (
-        <div>
-           <h1>Page inexsistante</h1> 
-        </div>
+            // Component Page erreur 404 
+            <div className="container">
+                <h1 className="text-center error-text "> ERROR 404 Page inexsistante</h1>
+                <h1 className="text-center">Retour vers <a className="lien-retour " href="/">l'accueil</a></h1>
+            </div>
+       
     );
 }
 

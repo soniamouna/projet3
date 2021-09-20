@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
 import BoutonModif from "../boutonModif/BoutonModif";
-import BoutonSupp from "../boutonSupp/BoutonSupp";
+import { MdDescription } from "react-icons/md";
+import { BsFillPeopleFill } from "react-icons/bs";
+import { CgTimelapse } from "react-icons/cg";
+import { GiLevelTwoAdvanced } from "react-icons/gi";
 
 function Recettes(props) {
+  // récupérer les states via les props
   const recetteCard = props.recetteState;
   const removeRecipe = props.removeRecipe;
-  const heure = Math.floor(recetteCard.tempsPreparation / 60);
-  const minutes = recetteCard.tempsPreparation % 60;
+  // méthode pour mettre les minutes >60min à 1h
+  const timePrep = () => {
+    const heure = Math.floor(recetteCard.tempsPreparation / 60);
+    const minutes = recetteCard.tempsPreparation % 60;
+    const heuretime = heure > 0 ? heure + "h" : "";
+    const time = heuretime + minutes;
+    return time;
+  };
+  //  state pour la pop-up qui s'affiche lorsqu'on appuie sur le bouton pour supprimer une recette
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -24,39 +34,56 @@ function Recettes(props) {
             {/* titre */}
             <Card.Title>{recetteCard.titre}</Card.Title>
             {/* description */}
-            <Card.Text>{recetteCard.description}</Card.Text>
+            <Card.Text>
+              <MdDescription /> {recetteCard.description}
+            </Card.Text>
             {/* difficulté */}
-            <Card.Text>{recetteCard.niveau}</Card.Text>
+
+            <Card.Text>
+              <GiLevelTwoAdvanced /> {recetteCard.niveau}
+            </Card.Text>
             {/* nombre de personne */}
             <Card.Text>
-              {recetteCard.personnes}{" "}
+              <BsFillPeopleFill /> {recetteCard.personnes}{" "}
               {recetteCard.personnes > 1 ? "personnes" : "personne"}
             </Card.Text>
             {/* temps de préparation */}
             <Card.Text>
-              {heure > 0 ? heure + "h" : ""} {minutes} min
+              <CgTimelapse />
+              {timePrep()} min
             </Card.Text>
           </Card.Body>
         </a>
         <Card.Footer>
           {/* bouton modifier */}
-          {/* <a href="/modifier-recette"> */}
-          <BoutonModif recetteCard={recetteCard}/>
-
-          <Button onClick={handleShow}  variant="primary">Supprimer</Button>
-            <Modal show={show} onHide={handleClose}>
-          <Modal.Header >
-            <Modal.Title>Êtes-vous sûr de vouloir supprimer cette recette?</Modal.Title>
-          </Modal.Header>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={()=>removeRecipe(true,recetteCard.id)}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          <BoutonModif recetteCard={recetteCard} />
+          {/* bouton supprimer */}
+          <Button
+            className="btn-bg-supp mx-2"
+            onClick={handleShow}
+            variant="none"
+          >
+            Supprimer
+          </Button>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header>
+              <Modal.Title>
+                Êtes-vous sûr de vouloir supprimer cette recette?
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+              <Button className="btn-bg" variant="none" onClick={handleClose}>
+                Non
+              </Button>
+              <Button
+                className="btn-bg-supp"
+                variant="none"
+                onClick={() => removeRecipe(true, recetteCard.id)}
+              >
+                Oui
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Card.Footer>
       </Card>
     </div>

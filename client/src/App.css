@@ -1,86 +1,153 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css);
-@import url('https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500&family=Tourney:ital,wght@0,500;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500&family=Tourney&display=swap");
 
-body{
-  /* background: rgb(253, 220, 189)!important; */
-  background: rgb(0, 0, 0)!important;
+body {
+  background: rgb(0, 0, 0) !important;
+}
+main {
+  margin-top: 100px;
+}
 
+h1,
+p,
+ul {
+  color: white;
 }
-h1, p, ul{
-  color:white;
-}
-ul{
+
+ul {
   list-style: none;
 }
-a{
-  text-decoration: none!important;
+
+a {
+  text-decoration: none !important;
 }
 
 /*** Header ***/
-.header{
-  background-color: black!important;
+.header {
+  background-color: black !important;
 }
 
-.logo{
-  color:white!important;
+.logo {
+  color: white !important;
 }
 
-.navbarToggle{
-  background-color: white!important;
+.bordure {
+  border: 1px solid green;
 }
-.navbar{
-  font-size:20px;
+
+.navbarToggle {
+  background-color: white !important;
 }
-.navbar:hover{
-  color:rgb(226, 24, 67)!important;
+.navbar {
+  font-size: 20px;
+}
+.navbar:hover {
+  color: rgb(226, 24, 67) !important;
 }
 /*** Breadcrump ***/
 
-.breadcrump{
-  /* border-bottom:10px solid rgb(255, 255, 255); */
-  /* background: rgb(8,15,22);
-  background: linear-gradient(180deg, rgba(8,15,22,1) 0%, rgba(20,34,48,1) 17%, rgba(42,73,102,1) 32%, rgba(63,91,120,1) 49%, rgba(42,73,102,1) 67%, rgba(20,34,48,1) 82%, rgba(14,25,37,1) 100%); */
-  /* background: rgb(210,104,75); */
-  /* background: linear-gradient(37deg, rgba(210,104,75,1) 0%, rgba(221,116,80,1) 17%, rgba(254,171,101,1) 38%, rgba(255,190,110,1) 66%, rgba(255,233,206,1) 89%, rgba(255,255,255,1) 100%); */
-  /* background: rgb(52,8,55); */
-  /* background: linear-gradient(37deg, rgb(32, 5, 34) 0%, rgb(51, 0, 48) 17%, rgba(106,14,39,1) 38%, rgba(255,169,78,1) 84%, rgba(255,255,255,1) 100%);} */
-  background: rgb(52,8,55);
-  background: linear-gradient(37deg, rgba(52,8,55,1) 0%, rgba(70,11,49,1) 17%, rgba(170,13,42,1) 38%, rgba(255,158,55,1) 76%, rgba(255,255,255,1) 100%);
+.breadcrump {
+  background: rgb(52, 8, 55);
+  background: linear-gradient(
+    37deg,
+    rgba(52, 8, 55, 1) 0%,
+    rgba(70, 11, 49, 1) 17%,
+    rgba(170, 13, 42, 1) 38%,
+    rgba(255, 158, 55, 1) 76%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
-.breadcrump-title{
+.breadcrump-title {
   color: white;
-  font-family: 'Tourney', cursive;
-  font-size:150px;
+  font-family: "Tourney", cursive;
+  font-size: 150px;
 }
 
-.sous-titre{
+.sous-titre {
   color: white;
   font-style: italic;
-  font-family: 'Saira Semi Condensed', sans-serif;
-  border-top:4px solid rgb(255, 255, 255);
-  border-bottom:4px solid rgb(255, 255, 255) ;
-  
-;}
+  font-family: "Saira Semi Condensed", sans-serif;
+  border-top: 4px solid rgb(255, 255, 255);
+  border-bottom: 4px solid rgb(255, 255, 255);
+}
 
 /*** Recettes ***/
 
-.borderCard{
-  border: 5px solid rgb(255, 230, 0)!important;
-  background: none!important;
+.borderCard {
+  background: none !important;
 }
+
+.card-body {
+  background-color: rgb(255, 239, 194);
+}
+
+.card-title {
+  color: rgb(156, 3, 131);
+  font-family: "Saira Semi Condensed", sans-serif;
+  font-weight: bold !important;
+  font-size: 25px !important;
+}
+.card-footer {
+  background-color: rgb(252, 202, 137) !important ;
+}
+
+.card-text {
+  color: rgb(255, 88, 37);
+  font-family: "Saira Semi Condensed", sans-serif;
+}
+
+.btn-bg {
+  background-color: rgb(156, 3, 131) !important;
+  color: white !important;
+}
+
+.btn-bg-supp {
+  background-color: rgb(202, 0, 78) !important;
+  color: white !important;
+}
+
+/*** Détails recette ***/
+.details-recette {
+  margin-top: 1000px !important;
+}
+.title-recette {
+  color: rgb(255, 94, 94);
+  font-weight: bold;
+  font-family: "Saira Semi Condensed", sans-serif;
+}
+.title {
+  color: rgb(156, 3, 131);
+  font-family: "Saira Semi Condensed", sans-serif;
+}
+/*** Formulaires ***/
+
+.form-label {
+  color: white !important;
+}
+
+/*** Page error ***/
+
+.error-text {
+  color: white;
+  text-align: center;
+}
+
+.lien-retour {
+  text-decoration: underline !important;
+  color: orange;
+  text-align: center !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
-
-    
   }
-  
 }
 
-@media screen and (max-width: 440px){
-  .breadcrump-title{
-    font-size:50px;
+@media screen and (max-width: 440px) {
+  .breadcrump-title {
+    font-size: 50px;
   }
 }
 
@@ -94,7 +161,6 @@ a{
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
 
 @keyframes App-logo-spin {
   from {

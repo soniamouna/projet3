@@ -2,9 +2,11 @@ import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import logo from '../../logo.jpeg'
+import {VscAdd} from "react-icons/vsc"
 
-function Header(props) {
+function Header() {
   return (
+    // header de la page
     <header className=" fixed">
       <Navbar className="mt-5"
         fixed="top"
@@ -28,21 +30,14 @@ function Header(props) {
                   </Navbar.Brand>
                 </Container>
               </Navbar>
-              <NavLink
-                className="navbar text-white mx-lg-5 "
-                exact
-                to="/"
-                activeClassName="selected"
-              >
-                Accueil
-              </NavLink>
+              {/* Lien vers la page pour ajouter une recette */}
               <NavLink
                 className="navbar text-white mx-lg-5"
                 exact
                 to="/ajouter-recette"
-                activeClassName="selected"
-              >
-                Ajouter une recette
+                
+
+              > <VscAdd/> Ajouter une recette
               </NavLink>
             </Nav>
           </Navbar.Collapse>
